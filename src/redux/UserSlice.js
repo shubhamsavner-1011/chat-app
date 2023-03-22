@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialData = {onlineUser: []};
+const initialData = {onlineUser: [], roomId: ''};
 
  const UserSlice = createSlice({
   name: "user",
@@ -9,10 +9,13 @@ const initialData = {onlineUser: []};
     onlineUsers: (state, action)=> {
       state.onlineUser = action.payload
       // console.log(state.onlineUser, '<<??????', action.payload)
+    },
+    joinRoom : (state, action)=> {
+      state.roomId = action.payload
     }
   },
 });
 
-export const { onlineUsers } = UserSlice.actions;
+export const { onlineUsers, joinRoom } = UserSlice.actions;
 
 export default UserSlice.reducer;

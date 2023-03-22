@@ -20,7 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import {onlineUsers} from "../../redux/UserSlice";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:9000");
+const socket = io.connect("http://localhost:4000");
 
 const validationSchema = yup.object({
   email: yup
@@ -74,6 +74,7 @@ export const Login = () => {
         if (loginUser.success === true) {
           Cookies.set("id", loginUser?.users?._id);
           Cookies.set("token", loginUser.token);
+          Cookies.set("username", loginUser?.users.username);
         }
         if (loginUser.token) {
           setData(loginUser);

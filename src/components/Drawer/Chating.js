@@ -6,11 +6,39 @@ import Toolbar from "@mui/material/Toolbar";
 import { ChatingFooter } from "./ChatingFooter";
 import { ChatingHeader } from "./ChatingHeader";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:9000");
+import { findChat } from "../../api/chatRequest";
+import { joinRoom } from "../../redux/UserSlice";
+import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import { getMessages } from "../../api/messageRequest";
+const socket = io.connect("http://localhost:4000");
 
-export const Chating = ({ user }) => {
+export const Chating = ({receiver, user }) => {
+  const [message, setMessage] = useState([]);
+  const senderId = Cookies.get("id");
+  const dispatch = useDispatch();
+  
+  React.useEffect(() => {
+    const find = async () => {
+      const chatId = await findChat(senderId, receiver);
+      const newChat = chatId?.data?._id;
+      dispatch(joinRoom(newChat));
+      if (newChat) {
+        socket.emit("joinRoom", newChat);
+      }
+      const {data} = await getMessages(newChat)
+      setMessage(data)
+    };
 
+    find();
+  }, [receiver, senderId, dispatch]);
 
+  React.useEffect(() => {
+    socket.on("receive-message", (data) => {
+      setMessage([...message, data]);
+    });
+  });
   return (
     <div>
       <Box sx={{ display: "flex" }}>
@@ -23,7 +51,7 @@ export const Chating = ({ user }) => {
           </Toolbar>
         </AppBar>
         <Box component="main" sx={{ width: "100%" }}>
-          <ChatingFooter user={user} socket={socket} />
+          <ChatingFooter user={user} socket={socket} message={message} setMessage={setMessage}/>
         </Box>
       </Box>
     </div>

@@ -21,15 +21,18 @@ export const MoreMenu = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = async () => {
+  const handleClose = () => {
     setAnchorEl(null);
-    const logout = await userLogout()
-    if(logout.data){
-        navigate(URL.LOGIN_PAGE)
-        Cookies.remove('token')
-    }
   };
-
+const handleLogout = async () => {
+  const logout = await userLogout()
+  if(logout.data){
+      navigate(URL.LOGIN_PAGE)
+      Cookies.remove('token')
+      Cookies.remove('id')
+      Cookies.remove('username')
+  }
+}
   return (
     <div>
       <IconButton
@@ -59,7 +62,7 @@ export const MoreMenu = () => {
       >
         {options.map((option) => (
           <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-            {option}
+           <span onClick={handleLogout}>{option} </span> 
           </MenuItem>
         ))}
       </Menu>

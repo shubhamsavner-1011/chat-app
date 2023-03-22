@@ -18,6 +18,7 @@ export const Dashboard = () => {
   const [chat, setChat] = useState(false);
   const [data, setData] = useState();
   const [user, setUser] = useState();
+  const [receiver, setReceiver] = useState();
   const id = Cookies.get("id");
   const result = data?.filter((item) => item._id !== id);
   const loginUser = data?.filter((item) => item._id === id);
@@ -50,13 +51,18 @@ export const Dashboard = () => {
         open={true}
       >
         <DrawerHeader>
-          <Header loginUser={loginUser}/>
+          <Header loginUser={loginUser} />
         </DrawerHeader>
         <Divider />
-        <DrawerList result={result} setChat={setChat} setUser={setUser} />
+        <DrawerList
+          result={result}
+          setChat={setChat}
+          setUser={setUser}
+          setReceiver={setReceiver}
+        />
       </Drawer>
       <Main open={true}>
-        {chat ? <Chating user={user} /> : <MainDetails />}
+        {chat ? <Chating receiver={receiver} user={user}/> : <MainDetails />}
       </Main>
     </Box>
   );

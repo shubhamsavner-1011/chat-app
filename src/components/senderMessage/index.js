@@ -1,8 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-export const SenderMessage = ({ item ,inputStr}) => {
-  console.log(item, 'sender', inputStr)
+export const SenderMessage = ({ item }) => {
   return (
     <div>
       <Box
@@ -14,19 +13,26 @@ export const SenderMessage = ({ item ,inputStr}) => {
       >
         <Box
           style={{
-            width: "400px",
             backgroundColor: "rgb(194, 243, 194)",
             padding: "5px 8px",
             textAlign: "start",
             borderRadius: "10px",
           }}
         >
-          <Typography variant="subtitle">{item.msg}</Typography>
+          <Typography variant="subtitle">{item?.text}</Typography>
           <Typography
-            variant="body2"
-            style={{ textAlign: "right", color: "gray" }}
+            style={{
+              color: "8696a0",
+              fontSize: "12px",
+              textAlign: "end",
+              margin: "5px 0 ",
+            }}
           >
-            you
+            {new Date().toLocaleString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
           </Typography>
         </Box>
       </Box>

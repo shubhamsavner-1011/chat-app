@@ -1,11 +1,9 @@
-import { Box, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Typography } from "@mui/material";
 
-export const ReceiverMessage = ({item, inputStr}) => {
-  console.log(item, 'receive', inputStr)
+export const ReceiverMessage = ({ item }) => {
   return (
     <div>
-          <Box
+      <Box
         style={{
           justifyContent: "start",
           display: "flex",
@@ -14,22 +12,24 @@ export const ReceiverMessage = ({item, inputStr}) => {
       >
         <Box
           style={{
-            width: "400px",
             backgroundColor: "#f9f5eb",
             padding: "5px 8px",
             textAlign: "start",
             borderRadius: "10px",
           }}
         >
-          <Typography variant="subtitle">{item.message}</Typography>
+          <Typography variant="subtitle">{item?.text}</Typography>
           <Typography
-            variant="body2"
-            style={{ textAlign: "left", color: "gray" }}
+            style={{ color: "8696a0", fontSize: "12px", textAlign: "end" }}
           >
-            {item.userName}
+            {new Date(item?.createdAt).toLocaleString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })}
           </Typography>
         </Box>
       </Box>
     </div>
-  )
-}
+  );
+};

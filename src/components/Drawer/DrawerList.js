@@ -5,28 +5,30 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
-import { getUser } from "../../api/userRequest";
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
-import { createChat } from "../../api/chatRequest";
-import Cookies from "js-cookie";
-const senderId = Cookies.get("id");
+import { getUser } from "../../api/userRequest";
 
-export const DrawerList = ({ result , setChat, setUser}) => {
+
+
+
+
+export const DrawerList = ({ result, setChat,setUser, setReceiver}) => {
+
   const handleOpen = async (receiverId) => {
     setChat(true);
-    const roomId = await createChat(senderId, receiverId)
-    console.log(roomId, '>>>>>roomId')
+    setReceiver(receiverId)
     const getUserData = async () => {
       try {
-        const user = await getUser(receiverId);
-        setUser(user);
+        const User = await getUser(receiverId);
+        setUser(User)
       } catch (error) {
         console.log(error);
       }
     };
     getUserData();
   };
+  
   return (
     <div>
       <List>
@@ -43,7 +45,8 @@ export const DrawerList = ({ result , setChat, setUser}) => {
                     alt="Remy Sharp"
                     // src="/static/images/avatar/1.jpg"
                     style={{ cursor: "pointer" }}
-                  >{text?.username.substring(0, 1).toUpperCase()}
+                  >
+                    {text?.username.substring(0, 1).toUpperCase()}
                   </Avatar>
                 </ListItemIcon>
                 <ListItemText primary={text.username} />

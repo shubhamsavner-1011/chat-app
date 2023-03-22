@@ -2,46 +2,52 @@ import React, { useEffect, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import { Input, MessageBox } from "./styleInputField";
 import { useSelector } from "react-redux";
+import io from "socket.io-client";
+import Cookies from "js-cookie";
+import { createMessage } from "../../api/messageRequest";
 
-export const InputField = ({
-  placeholder,
-  user,
-  socket,
-  setMessage,
-  message,
-  inputStr,
-  setInputStr,
-}) => {
+const socket = io.connect("http://localhost:4000");
+
+export const InputField = ({ placeholder, inputStr, setInputStr }) => {
   const [data, setData] = useState([]);
   const [newMessage, setNewMessage] = useState();
   const { onlineUser } = useSelector((state) => state.user);
-  console.log(onlineUser, "active>>>>>>>>>>");
+  const room = useSelector((state) => state.user);
+  console.log(onlineUser, "active-user");
+  const userName = Cookies.get("username");
+  const senderId = Cookies.get("id");
   let text1 = data;
   let text2 = inputStr;
 
   useEffect(() => {
-    console.log(">>>>>>");
     setNewMessage(text1.concat(text2));
   }, [text1, text2]);
 
   const handleChange = (val) => {
     setData(val);
   };
-  const handleSubmit = async () => {
-    const { socketId, username } = onlineUser?.find((item) => {
-      return item.userId === user?._id;
-    });
-    console.log(socketId);
+
+  const onSubmit = async () => {
     const messageData = {
-      anotherSocketId: socketId,
-      msg: newMessage,
-      username: username,
+      chatId: room?.roomId,
+      text: newMessage,
+      senderId: { _id: senderId, username: userName },
+      createdAt: new Date(),
     };
-    messageData && setMessage([...message, messageData]);
     await socket.emit("send-message", messageData);
+    await createMessage(messageData);
     setData("");
     setInputStr("");
     setNewMessage("");
+  };
+  const handleSubmit = async (e) => {
+    onSubmit();
+  };
+
+  const handleKeyPress = async (e) => {
+    if (e.key === "Enter") {
+      onSubmit();
+    }
   };
 
   return (
@@ -52,6 +58,7 @@ export const InputField = ({
           fullWidth
           value={newMessage}
           onChange={(e) => handleChange(e.target.value)}
+          onKeyPress={(e) => handleKeyPress(e)}
           InputProps={{
             endAdornment: (
               <SendIcon style={{ cursor: "pointer" }} onClick={handleSubmit} />
