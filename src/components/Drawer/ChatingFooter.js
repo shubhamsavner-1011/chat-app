@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, Stack } from "@mui/material";
+import React, { useMemo, useState } from "react";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import AttachmentOutlinedIcon from "@mui/icons-material/AttachmentOutlined";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
@@ -9,7 +9,33 @@ import { ReceiverMessage } from "../receiverMessage";
 import EmojiPicker from "emoji-picker-react";
 import Cookies from "js-cookie";
 
-export const ChatingFooter = ({ message }) => {
+export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
+  const [file, setFile] = useState();
+
+  console.log(file, "?????file");
+  const handleFileChange = (e) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  // const handleUploadClick = () => {
+  //   if (!file) {
+  //     return;
+  //   }
+
+  //   fetch("https://httpbin.org/post", {
+  //     method: "POST",
+  //     body: file,
+  //     headers: {
+  //       "content-type": file.type,
+  //       "content-length": `${file.size}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data))
+  //     .catch((err) => console.error(err));
+  // };
   const userName = Cookies.get("username");
   const [emoji, setEmoji] = useState(false);
   const [inputStr, setInputStr] = useState("");
@@ -19,6 +45,15 @@ export const ChatingFooter = ({ message }) => {
     setInputStr(Emoji);
     setEmoji(false);
   };
+
+  const sortedDetail = useMemo(() => {
+    const searchRegex = SearchValue && new RegExp(`${SearchValue}`, "gi");
+    return message.filter(
+      (item) => !searchRegex || searchRegex.test(item?.text)
+    );
+  }, [message, SearchValue]);
+
+  console.log(sortedDetail, "sorted-Detail");
   return (
     <>
       <Box
@@ -31,7 +66,7 @@ export const ChatingFooter = ({ message }) => {
           position: "relative",
         }}
       >
-        {message?.map((item, index) => {
+        {sortedDetail.map((item, index) => {
           return item?.senderId.username === userName ? (
             <SenderMessage item={item} inputStr={inputStr} />
           ) : (
@@ -61,13 +96,33 @@ export const ChatingFooter = ({ message }) => {
         }}
       >
         <Box>
-          <InsertEmoticonIcon
-            style={{ marginRight: "15px", color: "#54656f", cursor: "pointer" }}
-            onClick={() => setEmoji(true)}
-          />
-          <AttachmentOutlinedIcon
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <InsertEmoticonIcon
+              style={{
+                marginRight: "15px",
+                color: "#54656f",
+                cursor: "pointer",
+              }}
+              onClick={() => setEmoji(true)}
+            />
+            <Button component="label">
+              <AttachmentOutlinedIcon
+                style={{ color: "#54656f", cursor: "pointer" }}
+              />
+              <input hidden  type="file" onChange={handleFileChange}/>
+            </Button>
+          </Stack>
+          <div>
+            {/* <input type="file" onChange={handleFileChange} /> */}
+
+            {/* <div>{file && `${file.name} - ${file.type}`}</div> */}
+            {/* <AttachmentOutlinedIcon
+            onClick={handleUploadClick}
             style={{ color: "#54656f", cursor: "pointer" }}
-          />
+          >
+                 <input hidden accept="image/*" type="file" />
+          </AttachmentOutlinedIcon> */}
+          </div>
         </Box>
         <Box>
           <InputField
@@ -75,6 +130,9 @@ export const ChatingFooter = ({ message }) => {
             message={message}
             setInputStr={setInputStr}
             inputStr={inputStr}
+            file={file}
+            setFile={setFile}
+            setMessage={setMessage}
           />
         </Box>
         <Box>

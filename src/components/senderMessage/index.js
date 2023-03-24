@@ -1,7 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
+
 export const SenderMessage = ({ item }) => {
+console.log(item, 'sender>>>>')
   return (
     <div>
       <Box
@@ -19,7 +21,10 @@ export const SenderMessage = ({ item }) => {
             borderRadius: "10px",
           }}
         >
+          <img src={item?.imageId?.image} alt='images'/>
           <Typography variant="subtitle">{item?.text}</Typography>
+
+          {/* {item?.imageId &&  <MessageCard text={item?.text} src={item?.imageId.image}/> } */}
           <Typography
             style={{
               color: "8696a0",
@@ -28,7 +33,7 @@ export const SenderMessage = ({ item }) => {
               margin: "5px 0 ",
             }}
           >
-            {new Date().toLocaleString("en-US", {
+            {new Date(item?.createdAt).toLocaleString("en-US", {
               hour: "numeric",
               minute: "numeric",
               hour12: true,

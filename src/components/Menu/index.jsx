@@ -61,8 +61,8 @@ const handleLogout = async () => {
         }}
       >
         {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleClose}>
-           <span onClick={handleLogout}>{option} </span> 
+          <MenuItem key={option} selected={option === 'Pyxis'} onClick={handleLogout}>
+          {option}
           </MenuItem>
         ))}
       </Menu>

@@ -14,11 +14,12 @@ import { useState } from "react";
 import { getMessages } from "../../api/messageRequest";
 const socket = io.connect("http://localhost:4000");
 
-export const Chating = ({receiver, user }) => {
+export const Chating = ({ receiver, user }) => {
   const [message, setMessage] = useState([]);
+  const [SearchValue, setSearchvalue] = useState();
   const senderId = Cookies.get("id");
   const dispatch = useDispatch();
-  
+console.log(message, 'message-get>>>>>>>')
   React.useEffect(() => {
     const find = async () => {
       const chatId = await findChat(senderId, receiver);
@@ -27,8 +28,8 @@ export const Chating = ({receiver, user }) => {
       if (newChat) {
         socket.emit("joinRoom", newChat);
       }
-      const {data} = await getMessages(newChat)
-      setMessage(data)
+      const { data } = await getMessages(newChat);
+      setMessage(data);
     };
 
     find();
@@ -36,6 +37,8 @@ export const Chating = ({receiver, user }) => {
 
   React.useEffect(() => {
     socket.on("receive-message", (data) => {
+      console.log(data, 'socket-response')
+
       setMessage([...message, data]);
     });
   });
@@ -47,11 +50,17 @@ export const Chating = ({receiver, user }) => {
           <Toolbar
             style={{ marginLeft: "445px", justifyContent: "space-between" }}
           >
-            <ChatingHeader user={user} />
+            <ChatingHeader user={user} setSearchvalue={setSearchvalue} />
           </Toolbar>
         </AppBar>
         <Box component="main" sx={{ width: "100%" }}>
-          <ChatingFooter user={user} socket={socket} message={message} setMessage={setMessage}/>
+          <ChatingFooter
+            user={user}
+            socket={socket}
+            message={message}
+            setMessage={setMessage}
+            SearchValue={SearchValue}
+          />
         </Box>
       </Box>
     </div>
