@@ -19,7 +19,7 @@ export const Chating = ({ receiver, user }) => {
   const [SearchValue, setSearchvalue] = useState();
   const senderId = Cookies.get("id");
   const dispatch = useDispatch();
-console.log(message, 'message-get>>>>>>>')
+
   React.useEffect(() => {
     const find = async () => {
       const chatId = await findChat(senderId, receiver);

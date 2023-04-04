@@ -26,12 +26,13 @@ export const InputField = ({ placeholder, inputStr, setInputStr, file, setFile ,
 
   const handleChange = (val) => {
     setData(val);
+    setInputStr("")
   };
 
   const onSubmit = async () => {
     const messageData = {
       chatId: room?.roomId,
-      text: newMessage,
+      text: newMessage && newMessage,
       senderId: { _id: senderId, username: userName },
       avatar:file,
       createdAt: new Date(),
@@ -39,7 +40,7 @@ export const InputField = ({ placeholder, inputStr, setInputStr, file, setFile ,
     console.log(messageData, '???????????????messagedata')
     const result = await createMessage(messageData);
     console.log(result, 'result>>>.')
-    await socket.emit("send-message", messageData);
+    await socket.emit("send-message", result?.data);
     setData("");
     setInputStr("");
     setNewMessage("");

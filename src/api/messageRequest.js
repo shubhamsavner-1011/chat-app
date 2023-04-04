@@ -3,6 +3,7 @@ import axios from 'axios';
 export const getMessages = async (chatId) => {
    try{
       const {data} =  await axios.post(`http://localhost:4000/api/message/getmsg`,{chatId})
+      console.log(chatId, 'vjsy', data)
       return data;
    }
    catch(error){

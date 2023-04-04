@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 
 export const ReceiverMessage = ({ item }) => {
+  console.log(item, 'receiver')
+  
   return (
     <div>
       <Box
@@ -18,6 +20,7 @@ export const ReceiverMessage = ({ item }) => {
             borderRadius: "10px",
           }}
         >
+        {item?.imageUrl && <img src={item?.imageUrl} alt='images'/> }
           <Typography variant="subtitle">{item?.text}</Typography>
           <Typography
             style={{ color: "8696a0", fontSize: "12px", textAlign: "end" }}

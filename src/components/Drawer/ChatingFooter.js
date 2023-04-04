@@ -12,7 +12,6 @@ import Cookies from "js-cookie";
 export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
   const [file, setFile] = useState();
 
-  console.log(file, "?????file");
   const handleFileChange = (e) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
@@ -37,6 +36,7 @@ export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
   //     .catch((err) => console.error(err));
   // };
   const userName = Cookies.get("username");
+  console.log(userName, 'user')
   const [emoji, setEmoji] = useState(false);
   const [inputStr, setInputStr] = useState("");
   const onEmojiClick = (event, emojiObject) => {
@@ -48,12 +48,11 @@ export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
 
   const sortedDetail = useMemo(() => {
     const searchRegex = SearchValue && new RegExp(`${SearchValue}`, "gi");
-    return message.filter(
+    return message?.filter(
       (item) => !searchRegex || searchRegex.test(item?.text)
     );
   }, [message, SearchValue]);
-
-  console.log(sortedDetail, "sorted-Detail");
+  console.log(sortedDetail, 'sorted')
   return (
     <>
       <Box
@@ -66,8 +65,8 @@ export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
           position: "relative",
         }}
       >
-        {sortedDetail.map((item, index) => {
-          return item?.senderId.username === userName ? (
+        {sortedDetail?.map((item, index) => {
+          return item?.senderId?.username === userName ? (
             <SenderMessage item={item} inputStr={inputStr} />
           ) : (
             <ReceiverMessage item={item} inputStr={inputStr} />

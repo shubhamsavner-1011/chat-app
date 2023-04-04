@@ -21,7 +21,7 @@ console.log(item, 'sender>>>>')
             borderRadius: "10px",
           }}
         >
-          <img src={item?.imageId?.image} alt='images'/>
+        {item?.imageUrl && <img src={item?.imageUrl} alt='images'/> }
           <Typography variant="subtitle">{item?.text}</Typography>
 
           {/* {item?.imageId &&  <MessageCard text={item?.text} src={item?.imageId.image}/> } */}

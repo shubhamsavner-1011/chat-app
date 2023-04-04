@@ -14,7 +14,6 @@ export const ChatingHeader = ({ user , setSearchvalue}) => {
   const handleSearch = () => {
     setSearch(!search)
   }
-  console.log(search, 'search>>>>')
   return (
     <>
       <Box style={{ display: "flex", alignItems: "center" }}>
