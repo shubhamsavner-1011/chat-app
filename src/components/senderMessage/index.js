@@ -6,11 +6,10 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { MessageCard } from "../MessageCard";
 
 export const SenderMessage = ({ item }) => {
   console.log(item, 'sender')
-  console.log(item.imageUrl, "imageUrl>>>",);
-  console.log(item.image, "image>>>",);
   return (
     <div>
       <Box
@@ -29,30 +28,11 @@ export const SenderMessage = ({ item }) => {
           }}
         >
           {item?.imageUrl && (
-            <Card sx={{ maxWidth: 145 , height: 50}}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="60"
-                width="120"
-                image={item?.imageUrl}
-                alt="green iguana"
-              />
-            </CardActionArea>
-          </Card>
+            <MessageCard src={item?.imageUrl}/>
           )}
       
           {item?.image && (
-            <Card sx={{ maxWidth: 145 , height: 50}}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="60"
-                image={item?.image}
-                alt="green iguana"
-              />
-            </CardActionArea>
-          </Card>
+           <MessageCard src={item?.image}/>
           )}
           <Typography variant="subtitle">{item?.text}</Typography>
 
