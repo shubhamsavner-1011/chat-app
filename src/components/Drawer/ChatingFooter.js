@@ -9,7 +9,7 @@ import { ReceiverMessage } from "../receiverMessage";
 import EmojiPicker from "emoji-picker-react";
 import Cookies from "js-cookie";
 
-export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
+export const ChatingFooter = ({ message, SearchValue, setMessage }) => {
   const [file, setFile] = useState();
 
   const handleFileChange = (e) => {
@@ -36,7 +36,7 @@ export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
   //     .catch((err) => console.error(err));
   // };
   const userName = Cookies.get("username");
-  console.log(userName, 'user')
+  console.log(userName, "user");
   const [emoji, setEmoji] = useState(false);
   const [inputStr, setInputStr] = useState("");
   const onEmojiClick = (event, emojiObject) => {
@@ -52,7 +52,7 @@ export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
       (item) => !searchRegex || searchRegex.test(item?.text)
     );
   }, [message, SearchValue]);
-  console.log(sortedDetail, 'sorted')
+  console.log(sortedDetail, "sorted");
   return (
     <>
       <Box
@@ -108,20 +108,9 @@ export const ChatingFooter = ({ message, SearchValue, setMessage}) => {
               <AttachmentOutlinedIcon
                 style={{ color: "#54656f", cursor: "pointer" }}
               />
-              <input hidden  type="file" onChange={handleFileChange}/>
+              <input hidden type="file" onChange={handleFileChange} />
             </Button>
           </Stack>
-          <div>
-            {/* <input type="file" onChange={handleFileChange} /> */}
-
-            {/* <div>{file && `${file.name} - ${file.type}`}</div> */}
-            {/* <AttachmentOutlinedIcon
-            onClick={handleUploadClick}
-            style={{ color: "#54656f", cursor: "pointer" }}
-          >
-                 <input hidden accept="image/*" type="file" />
-          </AttachmentOutlinedIcon> */}
-          </div>
         </Box>
         <Box>
           <InputField

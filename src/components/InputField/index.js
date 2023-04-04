@@ -9,7 +9,6 @@ import { createMessage } from "../../api/messageRequest";
 const socket = io.connect("http://localhost:4000");
 
 export const InputField = ({ placeholder, inputStr, setInputStr, file, setFile , setMessage}) => {
-  console.log(file, '>>>.select file')
   const [data, setData] = useState([]);
   const [newMessage, setNewMessage] = useState();
   const { onlineUser } = useSelector((state) => state.user);
@@ -32,14 +31,12 @@ export const InputField = ({ placeholder, inputStr, setInputStr, file, setFile ,
   const onSubmit = async () => {
     const messageData = {
       chatId: room?.roomId,
-      text: newMessage && newMessage,
+      text: newMessage && newMessage.toString(),
       senderId: { _id: senderId, username: userName },
       avatar:file,
       createdAt: new Date(),
     };
-    console.log(messageData, '???????????????messagedata')
     const result = await createMessage(messageData);
-    console.log(result, 'result>>>.')
     await socket.emit("send-message", result?.data);
     setData("");
     setInputStr("");

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardActionArea, CardMedia, Typography } from "@mui/material";
 
 export const ReceiverMessage = ({ item }) => {
   console.log(item, 'receiver')
@@ -20,7 +20,31 @@ export const ReceiverMessage = ({ item }) => {
             borderRadius: "10px",
           }}
         >
-        {item?.imageUrl && <img src={item?.imageUrl} alt='images'/> }
+         {item?.imageUrl && (
+            <Card sx={{ maxWidth: 145 , height: 50}}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="60"
+                image={item?.imageUrl}
+                alt="green iguana"
+              />
+            </CardActionArea>
+          </Card>
+          )}
+          {item?.image && (
+            <Card sx={{ maxWidth: 145 , height: 50}}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="60"
+                width="120"
+                image={item?.image}
+                alt="green iguana"
+              />
+            </CardActionArea>
+          </Card>
+          )}
           <Typography variant="subtitle">{item?.text}</Typography>
           <Typography
             style={{ color: "8696a0", fontSize: "12px", textAlign: "end" }}
