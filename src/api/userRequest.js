@@ -1,6 +1,5 @@
 import axios from 'axios';
 const url = process.env.REACT_APP_URL;
-
 export const users = async (id) => {
    const {data} =  await axios.get(`${url}/api/users?userId=${id}`)
    return data;
@@ -12,6 +11,7 @@ export const getUser = async (id) => {
 }
 
 export const userLogin = async (user) => {
+   console.log(url, 'login')   
    const userData = await axios.post(`${url}/api/users/login`,user)
     return userData.data
 
