@@ -5,7 +5,6 @@
 /.pnp
 .pnp.js
 package-lock.jsonadd
-.env
 jwtToken.js
 node_modules/
 
