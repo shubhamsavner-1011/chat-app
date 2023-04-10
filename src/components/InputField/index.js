@@ -4,16 +4,23 @@ import { Input, MessageBox } from "./styleInputField";
 import { useSelector } from "react-redux";
 import io from "socket.io-client";
 import Cookies from "js-cookie";
-import { createMessage } from "../../api/messageRequest";
-
-const socket = io.connect("http://localhost:4000");
+import {createMessage } from "../../api/messageRequest";
+import {messageCount} from "../../redux/UserSlice";
+import { useDispatch } from "react-redux";
+const url = process.env.REACT_APP_URL;
+const socket = io.connect(`${url}/`, {cors: {
+  origin: "*",
+  methods: ["GET", "POST"]
+}});
 
 export const InputField = ({ placeholder, inputStr, setInputStr, file, setFile , setMessage}) => {
   const [data, setData] = useState([]);
   const [newMessage, setNewMessage] = useState();
+  const dispatch = useDispatch();
   const { onlineUser } = useSelector((state) => state.user);
   const room = useSelector((state) => state.user);
-  console.log(onlineUser, "active-user");
+
+  // console.log(onlineUser, "active-user");
   const userName = Cookies.get("username");
   const senderId = Cookies.get("id");
   let text1 = data;
@@ -30,14 +37,18 @@ export const InputField = ({ placeholder, inputStr, setInputStr, file, setFile ,
 
   const onSubmit = async () => {
     const messageData = {
-      chatId: room?.roomId,
+      chatId: room?.room.newChat,
       text: newMessage && newMessage.toString(),
       senderId: { _id: senderId, username: userName },
+      receiverId : room?.room.receiverId,
       avatar:file,
       createdAt: new Date(),
     };
     const result = await createMessage(messageData);
+    console.log(result, 'response>>>>>>>>>>')
+    // await getMessages(room?.roomId)
     await socket.emit("send-message", result?.data);
+    await socket.emit("send-count", result?.data);
     setData("");
     setInputStr("");
     setNewMessage("");

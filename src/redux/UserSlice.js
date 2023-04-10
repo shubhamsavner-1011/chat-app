@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialData = {onlineUser: [], roomId: ''};
+const initialData = {onlineUser: [], roomId: '', count : {}};
 
  const UserSlice = createSlice({
   name: "user",
@@ -11,11 +11,14 @@ const initialData = {onlineUser: [], roomId: ''};
       // console.log(state.onlineUser, '<<??????', action.payload)
     },
     joinRoom : (state, action)=> {
-      state.roomId = action.payload
+      state.room = action.payload
+    },
+    messageCount: (state, action) => {
+      state.count = action.payload
     }
   },
 });
 
-export const { onlineUsers, joinRoom } = UserSlice.actions;
+export const { onlineUsers, joinRoom, messageCount } = UserSlice.actions;
 
 export default UserSlice.reducer;

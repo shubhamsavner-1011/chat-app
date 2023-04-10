@@ -7,12 +7,18 @@ import { ChatingFooter } from "./ChatingFooter";
 import { ChatingHeader } from "./ChatingHeader";
 import io from "socket.io-client";
 import { findChat } from "../../api/chatRequest";
-import { joinRoom } from "../../redux/UserSlice";
+import { joinRoom, messageCount } from "../../redux/UserSlice";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { getMessages } from "../../api/messageRequest";
-const socket = io.connect("http://localhost:4000");
+
+const url = process.env.REACT_APP_URL;
+const socket = io.connect(`${url}/`,
+{cors: {
+  origin: "*",
+  methods: ["GET", "POST"]
+}});
 
 export const Chating = ({ receiver, user }) => {
   const [message, setMessage] = useState([]);
@@ -20,11 +26,13 @@ export const Chating = ({ receiver, user }) => {
   const senderId = Cookies.get("id");
   const dispatch = useDispatch();
 
+  console.log(message, "mesas");
   React.useEffect(() => {
     const find = async () => {
       const chatId = await findChat(senderId, receiver);
       const newChat = chatId?.data?._id;
-      dispatch(joinRoom(newChat));
+      const receiverId = receiver;
+      dispatch(joinRoom({ newChat, receiverId }));
       if (newChat) {
         socket.emit("joinRoom", newChat);
       }
@@ -37,9 +45,12 @@ export const Chating = ({ receiver, user }) => {
 
   React.useEffect(() => {
     socket.on("receive-message", (data) => {
-      console.log(data, 'socket-response')
-
+      console.log("rece-msg>>>>>>>>>>>>>>>>", data)
       setMessage([...message, data]);
+    });
+    socket.on("receive-count", (data) => {
+      console.log("response-count", data);
+      dispatch(messageCount(data));
     });
   });
   return (

@@ -1,15 +1,11 @@
 import {
   Box,
-  Card,
-  CardActionArea,
-  CardMedia,
   Typography,
 } from "@mui/material";
 import { MessageCard } from "../MessageCard";
 
 export const ReceiverMessage = ({ item }) => {
-  console.log(item, "receiver");
-
+  console.log(item, 'item>>>>>receiver')
   return (
     <div>
       <Box

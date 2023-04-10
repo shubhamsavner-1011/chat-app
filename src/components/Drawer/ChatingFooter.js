@@ -9,7 +9,7 @@ import { ReceiverMessage } from "../receiverMessage";
 import EmojiPicker from "emoji-picker-react";
 import Cookies from "js-cookie";
 
-export const ChatingFooter = ({ message, SearchValue, setMessage }) => {
+export const ChatingFooter = ({ message, SearchValue, setMessage, }) => {
   const [file, setFile] = useState();
 
   const handleFileChange = (e) => {
@@ -18,25 +18,7 @@ export const ChatingFooter = ({ message, SearchValue, setMessage }) => {
     }
   };
 
-  // const handleUploadClick = () => {
-  //   if (!file) {
-  //     return;
-  //   }
-
-  //   fetch("https://httpbin.org/post", {
-  //     method: "POST",
-  //     body: file,
-  //     headers: {
-  //       "content-type": file.type,
-  //       "content-length": `${file.size}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data))
-  //     .catch((err) => console.error(err));
-  // };
   const userName = Cookies.get("username");
-  console.log(userName, "user");
   const [emoji, setEmoji] = useState(false);
   const [inputStr, setInputStr] = useState("");
   const onEmojiClick = (event, emojiObject) => {
@@ -52,7 +34,7 @@ export const ChatingFooter = ({ message, SearchValue, setMessage }) => {
       (item) => !searchRegex || searchRegex.test(item?.text)
     );
   }, [message, SearchValue]);
-  console.log(sortedDetail, "sorted");
+console.log(sortedDetail, 'sorted')
   return (
     <>
       <Box
@@ -66,7 +48,7 @@ export const ChatingFooter = ({ message, SearchValue, setMessage }) => {
         }}
       >
         {sortedDetail?.map((item, index) => {
-          return item?.senderId?.username === userName ? (
+          return item?.senderId.username === userName ? (
             <SenderMessage item={item} inputStr={inputStr} />
           ) : (
             <ReceiverMessage item={item} inputStr={inputStr} />

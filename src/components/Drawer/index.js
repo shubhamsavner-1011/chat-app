@@ -12,6 +12,7 @@ import { users } from "../../api/userRequest";
 import "./style/Drawer";
 import { DrawerList } from "./DrawerList";
 import { DrawerHeader, Main } from "./style/Drawer";
+import { createCount } from "../../api/messageRequest";
 const drawerWidth = 440;
 
 export const Dashboard = () => {
@@ -19,6 +20,7 @@ export const Dashboard = () => {
   const [data, setData] = useState();
   const [user, setUser] = useState();
   const [receiver, setReceiver] = useState();
+  const [count, setCount] = useState();
   const id = Cookies.get("id");
   const result = data?.filter((item) => item._id !== id);
   const loginUser = data?.filter((item) => item._id === id);
@@ -26,12 +28,22 @@ export const Dashboard = () => {
   useEffect(() => {
     const getAllUser = async () => {
       try {
-        const user = await users();
+        const user = await users(id);
         setData(user);
       } catch (error) {
         console.log(error);
       }
     };
+    const Count = async () => {
+      try {
+        const unread = await createCount();
+        setCount(unread);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    Count();
+
     getAllUser();
   }, []);
   return (
@@ -59,6 +71,7 @@ export const Dashboard = () => {
           setChat={setChat}
           setUser={setUser}
           setReceiver={setReceiver}
+          count={count}
         />
       </Drawer>
       <Main open={true}>

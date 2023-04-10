@@ -20,7 +20,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import {onlineUsers} from "../../redux/UserSlice";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:4000");
+const url = process.env.REACT_APP_URL
+const socket = io.connect(`${url}/`,{cors: {
+  origin: "*",
+  methods: ["GET", "POST"]
+}});
 
 const validationSchema = yup.object({
   email: yup
